@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import words from "./words.json";
 import { Row } from "./Row";
+import { Keyboard } from "./Keyboard";
 const WORD_LENGTH = 5;
 
 function App() {
@@ -23,6 +24,8 @@ function App() {
   const handleGuess = () => {
 
   }
+
+
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -50,11 +53,13 @@ function App() {
         }
       } else {
         setCurrentGuess(currentGuess + e.key);
-        if (currentGuess.length === WORD_LENGTH && guessCount !== 6) {
+        if (currentGuess.length == WORD_LENGTH && guessCount !== 6) {
           // setGuesses(guesses.concat(currentGuess));
           guesses.splice(guessCount, 1, currentGuess);
           setCurrentGuess("");
           setGuessCount(guessCount + 1);
+        } else if (currentGuess.length > WORD_LENGTH) {
+          return
         }
       }
     }
@@ -66,7 +71,7 @@ function App() {
     return () => {
      window.removeEventListener("keydown", handleKeyDown);
     }
-  }, [currentGuess, guesses, guessCount])
+  }, [currentGuess, guesses, guessCount, todaysWord])
     console.log("current guess =>", currentGuess, guesses);
     console.log(guessCount);
 
@@ -76,12 +81,13 @@ function App() {
         <div className="flex flex-row justify-center w-full border-b-2">
           <h1 className="text-white text-6xl font-medium">Wordle: {todaysWord}</h1>
         </div>
-        <div className="flex flex-col gap-2 justify-center items-center w-full mt-20">
+        <div className="flex flex-col gap-2 justify-center items-center w-full mt-32 mb-12">
           {guesses.map((guess, index) => {
             const isCurrentGuess = index === guesses.findIndex(val => val == null);
             return <Row key={index} guess={isCurrentGuess ? currentGuess : guess ?? ""} wordLength={WORD_LENGTH} />;
           })}
         </div>
+        <Keyboard />
       </div>
     </div>
   );
