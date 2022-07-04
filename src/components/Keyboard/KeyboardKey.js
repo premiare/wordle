@@ -4,8 +4,8 @@ export const KeyboardKey = ({ keyValue, specialKey, icon, pressed }) => {
   const [keyPressed, setKeyPressed] = useState(false);
   
   const handleKeyPress = (e) => {
+    console.log(e.target.attributes[1].value);
     setKeyPressed(true);
-
     setTimeout(() => {
       setKeyPressed(false);
     }, 100);
@@ -20,7 +20,7 @@ export const KeyboardKey = ({ keyValue, specialKey, icon, pressed }) => {
       onKeyDown={(e) =>  {
         handleKeyPress(e)}}
       className={`select-none flex justify-center items-center ${keyPressed ? "bg-gray-500" : "bg-gray-400"} 
-      text-white text-xl font-medium ${specialKey ? "w-20" : "w-12"} h-16 bg-gray-600 rounded-md ml-2`}
+      text-white text-xl font-medium ${specialKey ? "w-20" : "w-12"} h-16 rounded-md ml-2`}
     >
       {icon ? icon : keyValue.toUpperCase()}
     </button>

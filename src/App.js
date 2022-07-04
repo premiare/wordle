@@ -38,12 +38,12 @@ function App() {
 
     for (let i = 0; i < todaysWordSplit.length; i++) {
       for (let j = 0; j < guess.length; j++) {
+        console.log(todaysWordSplit[i][j]);
         if (todaysWordSplit[i][j] === guess[j]) {
-          console.log("MATCH", todaysWordSplit[i][j], "=", guess[j], j);
           guessesSplit[index].isCorrect[j] = true;
-          guessesSplit[index].contains[j] = true;
         } else {
-          console.log("no match", todaysWordSplit[i][j], guess[j]);
+          
+          // guessesSplit[index].contains[j] = true;
         }
       }
     }
@@ -51,48 +51,31 @@ function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if(e.key === "Backspace") {
+      if (e.key === "Backspace") {
         setCurrentGuess(currentGuess.slice(0, -1));
         return;
+      } else if (e.key.length === 1) {
+        setCurrentGuess(currentGuess + e.key);
+        if (currentGuess.length === WORD_LENGTH && guessCount <= 6) {
+          guesses.splice(guessCount, 1, currentGuess);
+          setCurrentGuess("");
+          setGuessCount(guessCount + 1);
+        } else if (currentGuess.length > WORD_LENGTH) {
+          console.log("returning");
+          return;
+        }
       } else if (e.key === "Enter") {
         // if enter key is pressed and currentguess length is equal to WORD_LENGTH
         if (currentGuess.length === WORD_LENGTH && guessCount !== 6) {
           // if current guess is equal to todays word
-          if (currentGuess === todaysWord) {
-            // set guesses to todays word
-            guesses.splice(guessCount, 1, currentGuess);
-            console.log("you guessed it");
-            // set current guess to empty string
-            setCurrentGuess("");
-            // set guess count to 0
-            setGuessCount(0);
-          } else {
-            // if current guess is not equal to todays word
-            // set current guess to empty string
-            setCurrentGuess("");
-            // increment guess count
-            setGuessCount(guessCount + 1);
-          }
-        }
-      } else if (e.key.length === 1) {
-        setCurrentGuess(currentGuess + e.key);
-        if (currentGuess.length === WORD_LENGTH && guessCount <= 6) {
-          // setGuesses(guesses.concat(currentGuess));
           guesses.splice(guessCount, 1, currentGuess);
-          // guessesSplit.splice(guessCount, 1, currentGuess.split(""));
-          // guessesSplit[guessCount].value = currentGuess.split("");
-          // guessesSplit[guessCount].id = guessCount;
+          checkGuess(currentGuess, guessCount);
           setCurrentGuess("");
           setGuessCount(guessCount + 1);
-          
-        } else if (currentGuess.length > WORD_LENGTH) {
-          console.log("returning")
-          return
         }
-      }
+      } 
     }
     
-    checkGuess(currentGuess, guessCount);
     
     window.addEventListener("keydown", handleKeyDown);
 
@@ -113,7 +96,8 @@ function App() {
         <div className="flex flex-col gap-2 justify-center items-center w-full mt-32 mb-12">
           {guesses.map((guess, index) => {
             const isCurrentGuess = index === guesses.findIndex(val => val == null);
-            return <Row key={index} guess={isCurrentGuess ? currentGuess : guess ?? ""} wordLength={WORD_LENGTH} contains={guessesSplit[index]?.contains ? guessesSplit[index]?.contains : null}/>;
+            return <Row key={index} guess={isCurrentGuess ? currentGuess : guess ?? ""} wordLength={WORD_LENGTH} contains={guessesSplit[index]?.contains ? guessesSplit[index]?.contains : null}
+            isCorrect={guessesSplit[index]?.isCorrect ? guessesSplit[index]?.isCorrect : null}/>;
           })}
         </div>
         <Keyboard />
