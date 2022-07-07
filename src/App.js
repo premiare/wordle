@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import words from "./words.json";
 import { Row } from "./Row";
 import { Keyboard } from "./components/Keyboard/Keyboard";
+import { WinningConfetti } from "./components/Confetti";
 const WORD_LENGTH = 5;
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
   const [guessCount, setGuessCount] = useState(0);
     
   const [guessesSplit, setGuessesSplit] = useState([]);
-  
+  const [correctGuess, setCorrectGuess] = useState(false);
+
   useEffect(() => {
     if (sessionStorage.getItem("todaysWord") === null) {
       const randomWord = words[Math.floor(Math.random() * words.length)];
@@ -38,14 +40,22 @@ function App() {
 
     for (let i = 0; i < todaysWordSplit.length; i++) {
       for (let j = 0; j < guess.length; j++) {
-        console.log(todaysWordSplit[i][j]);
-        if (todaysWordSplit[i][j] === guess[j]) {
+        let currentGuessLetter = guess[j]; 
+        let currentWordLetter = todaysWordSplit[i][j];
+        
+        todaysWordSplit[i].forEach((letter) => {
+          if (letter === currentGuessLetter) {
+            guessesSplit[index].contains[j] = true;
+          }
+        })
+
+        if (currentWordLetter === currentGuessLetter) {
           guessesSplit[index].isCorrect[j] = true;
-        } else {
-          
-          // guessesSplit[index].contains[j] = true;
-        }
+        } 
       }
+    }
+    if(guess === todaysWord) {
+      setCorrectGuess(true);
     }
   };
 
@@ -89,6 +99,9 @@ function App() {
 
   return (
     <div className="h-screen w-screen bg-[#121213]">
+        {correctGuess ? 
+        <WinningConfetti /> :
+        null }
       <div className="w-full h-full">
         <div className="flex flex-row justify-center w-full border-b-2">
           <h1 className="text-white text-6xl font-medium">Wordle: {todaysWord}</h1>

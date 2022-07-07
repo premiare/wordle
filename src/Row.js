@@ -1,7 +1,5 @@
 
 export const Row = ({ guess, wordLength, contains, isCorrect}) => {
-  console.log("CONTAINS", contains)
-  console.log("IS CORRECT", isCorrect);
   const tiles = [];
   for (let i = 0; i < wordLength; i++) {
     const char = guess[i];
