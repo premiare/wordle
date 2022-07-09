@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import { TiBackspaceOutline } from "react-icons/ti";
-import { KeyboardRow } from "./KeyboardKey";
 import { KeyboardKey } from "./KeyboardKey"
 
-export const Keyboard = () => {
+export const Keyboard = ({ incorrectLetters }) => {
   const [pressed, setPressed] = useState(false);
- 
-  const keyboardRow = document.querySelector("#keyboardRow");
+
+  console.log("in the keyboard", incorrectLetters)
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if(e.key === "Backspace") {
+      if (e.key === "Backspace") {
         setPressed(true);
         return;
       } else if (e.key === "Enter") {
         setPressed(true);
-      }           
-    }
+      }
+    };
 
     window.addEventListener("keydown", handleKeyDown);
 
@@ -25,6 +24,10 @@ export const Keyboard = () => {
     };
   }, [pressed]);
 
+  const topRowKeys = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
+  const midRowKeys = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
+  const bottomRowKeys = ["z", "x", "c", "v", "b", "n", "m"];
+
   return (
     <>
       <div className="w-full h-auto" id="keyboard keyboardTop">
@@ -32,43 +35,38 @@ export const Keyboard = () => {
           className="flex flex-row justify-center items-center h-20 w-full mb-2"
           id="keyboardRow"
         >
-          <KeyboardKey keyValue="q" />
-          <KeyboardKey keyValue="w" />
-          <KeyboardKey keyValue="e" />
-          <KeyboardKey keyValue="r" />
-          <KeyboardKey keyValue="t" />
-          <KeyboardKey keyValue="y" />
-          <KeyboardKey keyValue="u" />
-          <KeyboardKey keyValue="i" />
-          <KeyboardKey keyValue="o" />
-          <KeyboardKey keyValue="p" />
+          {topRowKeys.map((key, index) => (
+            <KeyboardKey
+              key={key}
+              keyValue={key}
+              incorrectLetters={incorrectLetters}
+            />
+          ))}
         </div>
         <div
           className="flex flex-row justify-center items-center h-20 w-full mb-2"
           id="keyboardRow keyboardMiddle"
         >
-          <KeyboardKey keyValue="a" />
-          <KeyboardKey keyValue="s" />
-          <KeyboardKey keyValue="d" />
-          <KeyboardKey keyValue="f" />
-          <KeyboardKey keyValue="g" />
-          <KeyboardKey keyValue="h" />
-          <KeyboardKey keyValue="j" />
-          <KeyboardKey keyValue="k" />
-          <KeyboardKey keyValue="l" />
+          {midRowKeys.map((key, index) => (
+            <KeyboardKey
+              key={key}
+              keyValue={key}
+              incorrectLetters={incorrectLetters}
+            />
+          ))}
         </div>
         <div
           className="flex flex-row justify-center items-center h-20 w-full mb-2"
           id="keyboardRow keyboardMiddle"
         >
           <KeyboardKey keyValue="Enter" specialKey />
-          <KeyboardKey keyValue="z" />
-          <KeyboardKey keyValue="x" />
-          <KeyboardKey keyValue="c" />
-          <KeyboardKey keyValue="v" />
-          <KeyboardKey keyValue="b" />
-          <KeyboardKey keyValue="n" />
-          <KeyboardKey keyValue="m" />
+          {bottomRowKeys.map((key, index) => (
+            <KeyboardKey
+              key={key}
+              keyValue={key}
+              incorrectLetters={incorrectLetters}
+            />
+          ))}
           <KeyboardKey
             keyValue="backspace"
             icon={<TiBackspaceOutline className="w-8 h-auto" />}

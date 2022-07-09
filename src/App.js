@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import words from "./words.json";
-import { Row } from "./Row";
+import { Row } from "./components/Row";
 import { Keyboard } from "./components/Keyboard/Keyboard";
 import { WinningConfetti } from "./components/Confetti";
 const WORD_LENGTH = 5;
@@ -11,11 +11,15 @@ function App() {
   const [guesses, setGuesses] = useState(new Array (6).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [guessCount, setGuessCount] = useState(0);
-    
+  const [checkWord, setCheckWord] = useState(false);
   const [guessesSplit, setGuessesSplit] = useState([]);
   const [correctGuess, setCorrectGuess] = useState(false);
 
+  const [incorrectLetters, setIncorrectLetters] = useState([]);
+
   useEffect(() => {
+    // checking to see if a word is already picked
+    // if not, set a word in session storage
     if (sessionStorage.getItem("todaysWord") === null) {
       const randomWord = words[Math.floor(Math.random() * words.length)];
       setTodaysWord(randomWord);
@@ -25,8 +29,10 @@ function App() {
     }
   }, []);
 
+  // check the guess to see if it the letters are correct or are contained in todays word - any incorrect letters are added to the incorrectLetters array
   const checkGuess = (guess, guessCount) => {
     const index = guessCount;
+    setCheckWord(true);
     if (guessesSplit.length >= 6) {
       return;
     }
@@ -36,24 +42,32 @@ function App() {
       id: index,
       isCorrect: new Array(5).fill(false),
       contains: new Array(5).fill(false),
+      checkWord: false,
     };
 
     for (let i = 0; i < todaysWordSplit.length; i++) {
       for (let j = 0; j < guess.length; j++) {
         let currentGuessLetter = guess[j]; 
         let currentWordLetter = todaysWordSplit[i][j];
-        
+        console.log(currentGuessLetter);
         todaysWordSplit[i].forEach((letter) => {
           if (letter === currentGuessLetter) {
             guessesSplit[index].contains[j] = true;
           }
         })
 
+        if(currentWordLetter !== currentGuessLetter && guessesSplit[index].contains[j] === false) {
+          setIncorrectLetters(prev => [...prev, currentGuessLetter]);
+        }
+
         if (currentWordLetter === currentGuessLetter) {
           guessesSplit[index].isCorrect[j] = true;
         } 
       }
     }
+
+    guessesSplit[index].checkWord = true;
+    console.log("incorrect letters =>", incorrectLetters);
     if(guess === todaysWord) {
       setCorrectGuess(true);
     }
@@ -94,11 +108,11 @@ function App() {
     }
   }, [currentGuess, guesses, guessCount, todaysWord, guessesSplit])
   console.log("current guess =>", currentGuess, guesses);
-
+  console.log("incorrect letters =>", incorrectLetters);
   console.log(guessCount);
 
   return (
-    <div className="h-screen w-screen bg-[#121213]">
+    <div className="h-screen w-screen bg-[#121213] select-none">
         {correctGuess ? 
         <WinningConfetti /> :
         null }
@@ -110,10 +124,10 @@ function App() {
           {guesses.map((guess, index) => {
             const isCurrentGuess = index === guesses.findIndex(val => val == null);
             return <Row key={index} guess={isCurrentGuess ? currentGuess : guess ?? ""} wordLength={WORD_LENGTH} contains={guessesSplit[index]?.contains ? guessesSplit[index]?.contains : null}
-            isCorrect={guessesSplit[index]?.isCorrect ? guessesSplit[index]?.isCorrect : null}/>;
+            isCorrect={guessesSplit[index]?.isCorrect ? guessesSplit[index]?.isCorrect : null} checkWord={guessesSplit[index]?.checkWord ? guessesSplit[index]?.checkWord : false}/>;
           })}
         </div>
-        <Keyboard />
+        <Keyboard incorrectLetters={incorrectLetters} />
       </div>
     </div>
   );
