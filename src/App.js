@@ -28,7 +28,7 @@ function App() {
     } else {
       setTodaysWord(sessionStorage.getItem("todaysWord"));
     }
-    console.log("test commit");
+    console.log("test commit 2");
   }, []);
 
   // check the guess to see if it the letters are correct or are contained in todays word - any incorrect letters are added to the incorrectLetters array
