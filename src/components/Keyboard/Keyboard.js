@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { TiBackspaceOutline } from "react-icons/ti";
-import { KeyboardKey } from "./KeyboardKey"
+import { KeyboardKey } from "./KeyboardKey";
 
 export const Keyboard = ({ incorrectLetters }) => {
   const [pressed, setPressed] = useState(false);
 
-  console.log("in the keyboard", incorrectLetters)
+  console.log("in the keyboard", incorrectLetters);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -30,9 +30,9 @@ export const Keyboard = ({ incorrectLetters }) => {
 
   return (
     <>
-      <div className="w-full h-auto" id="keyboard keyboardTop">
+      <div className="w-[95%] h-full mx-auto" id="keyboard keyboardTop">
         <div
-          className="flex flex-row justify-center items-center h-20 w-full mb-2"
+          className="flex flex-row justify-center items-center h-20 w-full mb-2 mx-auto"
           id="keyboardRow"
         >
           {topRowKeys.map((key, index) => (
@@ -44,7 +44,7 @@ export const Keyboard = ({ incorrectLetters }) => {
           ))}
         </div>
         <div
-          className="flex flex-row justify-center items-center h-20 w-full mb-2"
+          className="flex flex-row justify-center items-center h-20 w-full mb-2 mx-auto"
           id="keyboardRow keyboardMiddle"
         >
           {midRowKeys.map((key, index) => (
@@ -56,7 +56,7 @@ export const Keyboard = ({ incorrectLetters }) => {
           ))}
         </div>
         <div
-          className="flex flex-row justify-center items-center h-20 w-full mb-2"
+          className="flex flex-row justify-center items-center h-20 w-[95%] mx-auto"
           id="keyboardRow keyboardMiddle"
         >
           <KeyboardKey keyValue="Enter" specialKey />

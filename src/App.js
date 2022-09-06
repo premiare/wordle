@@ -18,6 +18,8 @@ function App() {
 
   const [incorrectLetters, setIncorrectLetters] = useState([]);
 
+  let gameState = {};
+
   useEffect(() => {
     // checking to see if a word is already picked
     // if not, set a word in session storage
@@ -115,7 +117,7 @@ function App() {
   console.log(guessCount);
 
   return (
-    <div className="h-screen w-screen bg-[#121213] select-none">
+    <div className="h-full w-screen bg-[#121213] select-none sm:h-screen">
       {correctGuess ? <WinningConfetti /> : null}
       <div className="w-full h-full">
         <div className="flex flex-row justify-center w-full border-b-2">
@@ -123,7 +125,7 @@ function App() {
             Wordle: {todaysWord}
           </h1>
         </div>
-        <div className="flex flex-col gap-2 justify-center items-center w-full mt-32 mb-12">
+        <div className="flex flex-col gap-2 justify-center items-center w-full mt-4 sm:mt-32 mb-12 ">
           {guesses.map((guess, index) => {
             const isCurrentGuess =
               index === guesses.findIndex((val) => val == null);
