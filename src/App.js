@@ -117,15 +117,15 @@ function App() {
   console.log(guessCount);
 
   return (
-    <div className="h-full w-screen bg-[#121213] select-none sm:h-screen">
+    <div className="h-screen w-screen bg-[#121213] select-none overflow-hidden">
       {correctGuess ? <WinningConfetti /> : null}
       <div className="w-full h-full">
-        <div className="flex flex-row justify-center w-full border-b-2">
+        {/* <div className="flex flex-row justify-center w-full border-b-2">
           <h1 className="text-white text-6xl font-medium">
             Wordle: {todaysWord}
           </h1>
-        </div>
-        <div className="flex flex-col gap-2 justify-center items-center w-full mt-4 sm:mt-32 mb-12 ">
+        </div> */}
+        <div className="flex flex-col gap-2 justify-center items-center w-full mt-4 sm:mt-32 mb-0 sm:mb-12 ">
           {guesses.map((guess, index) => {
             const isCurrentGuess =
               index === guesses.findIndex((val) => val == null);

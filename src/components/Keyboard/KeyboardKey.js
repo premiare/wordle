@@ -42,7 +42,7 @@ export const KeyboardKey = ({
       } 
       text-white text-xl font-medium ${
         specialKey ? "w-20" : "w-12"
-      } h-16 rounded-md mx-auto`}
+      } h-16 text-lg rounded-md mx-auto sm:ml-2 sm:mr-0 `}
     >
       {icon ? icon : keyValue.toUpperCase()}
     </button>

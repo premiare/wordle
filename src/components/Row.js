@@ -17,7 +17,7 @@ export const Row = ({
     tiles.push(
       <div
         key={i}
-        className={`flex flex-col justify-center items-center w-16 h-16 text-4xl font-medium border-2 rounded-sm ${
+        className={`flex flex-col justify-center items-center w-14 h-14 sm:w-16 sm:h-16 text-4xl font-medium border-2 rounded-sm ${
           char?.length ? `border-gray-400` : "border-gray-600"
         } ${contains && contains[i] === true ? "bg-yellow-500" : null} ${
           isCorrect && isCorrect[i] === true ? "bg-green-500" : null
